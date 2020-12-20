@@ -19,9 +19,9 @@ Pour rendre le jeu plus visuel on attribut les symboles suivant à ces étiquett
 - DRAPEAU = *
 
 3 différents choix de niveaux de jeux pour le joueur : 
-_Niveau 1 --> Facile : plateau de taille 5*5
-_Niveau 2 --> intermédiaire : plateau de taille 16*16
-_Niveau 3 --> Expert : plateau de taille 24*24 
+- Niveau 1 --> Facile : plateau de taille 5*5
+- Niveau 2 --> intermédiaire : plateau de taille 16*16
+- Niveau 3 --> Expert : plateau de taille 24*24 
 
 A chaque partie le joueur décide du niveau qu'il veut.
 Dans le fichier scores.txt on stock les scores. A l'etat initiale le score du joueur est de 0 puis il augmente de 1 à chaque fois que le joueur gagne une partie.
