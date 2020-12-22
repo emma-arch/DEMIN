@@ -5,8 +5,8 @@ INCONNU = '_'
 PERDU = '!'
 DRAPEAU = '*'
 
-LEVELS = [(2,2), (16,16), (24,24)]
-MINES = [2, 16, 24]
+LEVELS = [(5,5), (16,16), (24,24)]
+MINES = [5, 16, 24]
 
 def genere_plateau_vide(level): #level = 0 ou 1 ou 2
     x_size, y_size = LEVELS[level]
@@ -20,7 +20,7 @@ def genere_plateau_vide(level): #level = 0 ou 1 ou 2
 
 
 def place_mines(plateau, level, alea=True):
-    x_size, y_size = LEVELS[level]
+    
     #plateau_avec_mines = place_mines(plateau, level) # alea=True
     #plateau_avec_mines = place_mines(plateau, level, alea = False) 
     n = MINES[level]
@@ -31,16 +31,15 @@ def place_mines(plateau, level, alea=True):
             plateau_avec_mines[i][i]['mine'] = True
         return plateau_avec_mines
     # on place les mines de façon aléatoire
-    while n != 0:
-        #for i, ligne in enumerate(plateau_avec_mines): 
-            #for j, colonne in enumerate(ligne):
-        for i in range(x_size):
-            for j in range(y_size):
-                    if random.randint(0,1)==1:
-                        plateau_avec_mines[i][j]['mine'] = True 
-                        n -=1 
-        return plateau_avec_mines
     
+    for i, ligne in enumerate(plateau_avec_mines): 
+        for j, colonne in enumerate(ligne):
+    
+    
+            if random.randint(0,4)==0: 
+                plateau_avec_mines[i][j]['mine'] = True 
+    return plateau_avec_mines
+
 
 
 def construire_plateau(level, alea = True):
@@ -53,7 +52,7 @@ def coup_joueur(plateau):
     #le joueur donne (x,y) ou il met un drapeau
     answer = input("coordonnées ? : ")
     x, y = answer.split(',')
-    d = input("Un DRAPEAU ? ")
+    d = input("Un DRAPEAU ? oui/non : ")
     if d == 'oui': 
         plateau[int(x)][int(y)]['etat'] = DRAPEAU
         return (int(x),int(y))
@@ -89,36 +88,18 @@ def composante_connexe(plateau,x,y):
     # met le plateau à jour en ouvrant toutes les cases vides à partir de la case (x,y)
     #il d'agit d'une procédure, il s'agir d'un bloc d'instructions qui ne renvoie pas de valeur à la fin.
     #ici la variable plateau est modifié.
-    T = liste_case_voisine(plateau,x,y)
+    
     if plateau[x][y]['etat'] != INCONNU:
         return
-    plateau[x][y]["etat"] = compte_mines_voisines(plateau, x, y)
-    if plateau[x][y]['etat'] > 0:
-        return
-    else:
-        for i in T:
-                composante_connexe(plateau,i[0],i[1])
-    
-def liste_case_voisine(plateau,x,y):
-    T = []
     L = case_voisines(plateau,x,y)
-    M = []
-    for i in L:
-        M = case_voisines(plateau,i[0],i[1])
-    C = []
-    for i in M:
-        C = case_voisines(plateau,i[0],i[1])
-    A = []
-    for i in C:
-        A = case_voisines(plateau,i[0],i[1])
-    S  =[]
-    for i in A:
-        S = case_voisines(plateau, i[0], i[1])
-    Z = []
-    for i in S:
-        Z = case_voisines(plateau,i[0],i[1])
-    T = L + M + S + Z
-    return T
+    
+    plateau[x][y]['etat'] = compte_mines_voisines(plateau,x,y)
+    if plateau[x][y]['etat'] != 0:
+        return
+    
+    else:
+        for i in L:
+            composante_connexe(plateau,i[0],i[1])
 
    # début de fonction recursive
    # def find_free_cells(grid, cell):
@@ -139,6 +120,7 @@ def liste_case_voisine(plateau,x,y):
 def decouvre_case(plateau,x,y):
     "fonction et procédure a la fois car renvoie un booléen et modifie l'argument plateau. renvoie False si la case contenait une mine et True sinon."
     if plateau[x][y]["etat"] == DRAPEAU:
+        display(plateau)
         x,y = coup_joueur(plateau)
     if plateau[x][y]["mine"] == True and plateau[x][y]["etat"] != DRAPEAU:
         plateau[x][y]["etat"] = PERDU
@@ -208,10 +190,11 @@ write_score(filename,0)
 
 niv = input("Niveau 0/1/2 ? : ")
 plateau=construire_plateau(int(niv), alea = True )
-
+m = total_mines(plateau)
 
 
 while True:
+    print(m)
     display(plateau)
     x,y = coup_joueur(plateau)
     L = case_voisines(plateau,x,y)
