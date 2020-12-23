@@ -21,7 +21,7 @@ Pour rendre le jeu plus visuel on attribut les symboles suivant à ces étiquett
 - DRAPEAU = *
 
 3 différents choix de niveaux de jeux pour le joueur : 
-- Niveau 1 --> Facile : plateau de taille 5*5
+- Niveau 1 --> Facile : plateau de taille 9*9
 - Niveau 2 --> intermédiaire : plateau de taille 16*16
 - Niveau 3 --> Expert : plateau de taille 24*24 
 
@@ -30,7 +30,7 @@ Dans le fichier scores.txt on stock les scores. Au démarrage le score du joueur
 
 ### Collaboration
 Le projet à été mené à bien par Emma Brillat.
-3 mois de travaille on été nécessaire.
+Réalisation de octobre à janvier 2020.
 
 ### Explications des fonctions
 La fonction `genere_plateau_vide(level)` créée un plateau vide de taille : 
@@ -75,7 +75,7 @@ Le déroulement d'une partie de jeu est la suivante :
 
 4) Affiche le plateau avec la/les case(s) qui a/ont été découverte(s).
 
-5) Choix de la case à dévouvir.
+5) Choix de la case à découvir.
 
 6) Refait le point 3), 4), 5) jusqu'à l'infini.
 

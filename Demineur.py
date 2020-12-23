@@ -5,8 +5,8 @@ INCONNU = '_'
 PERDU = '!'
 DRAPEAU = '*'
 
-LEVELS = [(5,5), (16,16), (24,24)]
-MINES = [5, 16, 24]
+LEVELS = [(9,9), (16,16), (24,24)]
+MINES = [9, 16, 24]
 
 def genere_plateau_vide(level): #level = 0 ou 1 ou 2
     x_size, y_size = LEVELS[level]
@@ -101,27 +101,10 @@ def composante_connexe(plateau,x,y):
         for i in L:
             composante_connexe(plateau,i[0],i[1])
 
-   # début de fonction recursive
-   # def find_free_cells(grid, cell):
-   # éliminer le cas de base (si il n'y a plus de cases à explorer) -> return
-   #    faire une liste des cases adjacentes (i+1, j), (i+1, j-1), (i+1, j+1), (i-1, j), (i-1, j-1), (i-1, j+1), (i, j-1), (i, j+1)
-   #        pour chaque case adjacente:
-   #            si elle n'est pas vide:
-   #                ... modifier la grille
-   #            si elle est vide:
-   #                find_free_cells(grid, cell) !!! pour la convergence il faut que grid ait été modifiée
-
-   #    if 0 < i < n : 
-   #    if i > 0 and i < n :
     
-
-    
-
 def decouvre_case(plateau,x,y):
     "fonction et procédure a la fois car renvoie un booléen et modifie l'argument plateau. renvoie False si la case contenait une mine et True sinon."
-    if plateau[x][y]["etat"] == DRAPEAU:
-        display(plateau)
-        x,y = coup_joueur(plateau)
+
     if plateau[x][y]["mine"] == True and plateau[x][y]["etat"] != DRAPEAU:
         plateau[x][y]["etat"] = PERDU
         print("Tu as perdu")
@@ -152,6 +135,7 @@ def total_mines(plateau):
             if j['mine'] == True:
                 c +=1
     return c
+
 
 def check(plateau):
     #compte le nombre de drapeau et de case inconnue
@@ -191,12 +175,15 @@ write_score(filename,0)
 niv = input("Niveau 0/1/2 ? : ")
 plateau=construire_plateau(int(niv), alea = True )
 m = total_mines(plateau)
-
+print(m)
 
 while True:
-    print(m)
     display(plateau)
     x,y = coup_joueur(plateau)
+    if plateau[x][y]["etat"] == DRAPEAU:
+        m = m -1
+        print(m)
+    
     L = case_voisines(plateau,x,y)
     
     if not decouvre_case(plateau,x,y):   
@@ -204,7 +191,7 @@ while True:
         display(plateau)
         niv = input("Niveau 0/1/2 ? : ")
         plateau = construire_plateau(int(niv), alea = True) 
-                                                 
+        print(m)                                        
     if total_mines(plateau) == check(plateau):
         print("Tu as gagné")
         write_score(filename, int(scores[-1]) + 1)
@@ -212,7 +199,7 @@ while True:
         print(scores)
         niv = input("Niveau 0/1/2 ? : ")
         plateau = construire_plateau(int(niv), alea = True)
-       
+        print(m)
     
     
     
