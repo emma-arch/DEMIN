@@ -2,15 +2,15 @@
 Description du code du jeu en ligne le démineur.
 ***
 ## Informations génerales
-Le but du jeu du démineur est de découvrir toute les cases vides du plateau sans faire exploser les mines.
+Le but du jeu du démineur est de découvrir toutes les cases vides du plateau sans faire exploser les mines.
 ***
-le plateau est représenté par un liste de liste de dictionnaire.
+Ici, le plateau est représenté par un liste de liste de dictionnaire.
 
 La case de coordonnée (x,y) est un dictionnaire donc une paire clé valeur.
   - "mine" (une clé) qui est un booléen et qui indique si la case contient une mine 
   - "etat" (une clé) indique l'état de la case :
       - INCONNU quand le joueur n'a pas découvert la case
-      - un entier compris entre 0 et 8 qui indique le nombre de mines voisines, quand le joueur à decouvert la case.
+      - Un entier compris entre 0 et 8 qui indique le nombre de mines voisines, quand le joueur a decouvert la case.
       - PERDU quand il s'agit d'une case avec une mine, que le joueur a séléctionné.
       - DRAPEAU si le joueur a mis un drapeau.
 
@@ -34,12 +34,12 @@ Réalisation de octobre à janvier 2020.
 
 ### Explications des fonctions
 La fonction `genere_plateau_vide(level)` créée un plateau vide de taille : 
-- (5,5) pour le niveau 1
+- (9,9) pour le niveau 1
 - (16,16) pour le niveau 2
 - (24,24) pour le niveau 3
 
-La fonction `place_mines(plateau, level, alea = True)` place par défaut m mines sur le plateau aléatoirement, avec m = un nombre au hasard.
-Et si alea = False, place n mines sur la diagonal. Avec n = nombre de ligne du plateau.
+La fonction `place_mines(plateau, level, alea = True)` place par défaut n mines sur le plateau aléatoirement, avec n = nombre de ligne du plateau.
+Et si alea = False, place n mines sur la diagonal. 
 
 La fonction `construire_plateau(level, alea = True)` génère le plateau.
 
@@ -62,7 +62,7 @@ Les fonctions `write_score(filename,score)` et `read_scores(filename)` permetten
 La boucle while True est une boucle infinie qui permet de jouer au démineur.
 Le déroulement d'une partie de jeu est la suivante : 
 
-1) Affichage du plateau avec en haut à gauche le nombre totale de mine caché.
+1) Affichage du plateau avec en haut à gauche le compteur qui indique le nombre de mine qu'il reste à trouver.
 
 2) Choix de la case à découvrir.
 
@@ -70,13 +70,13 @@ Le déroulement d'une partie de jeu est la suivante :
   - Si elle contenait une mine alors le joueur à perdu. Et recommence une partie.
   - Si le nombre totale de mine sur le plateau est égal a celui du nombre de drapeau + de case inconnu alors le joueur à gagné et son score augmente de 1.
   - Sinon on compte le nombre de mines qu'il y a autour de cette case.
-      - Si il n'y en a pas on continue de découvrir les cases voisines des cases voisines.
+      - Et si il n'y en a pas on continue de découvrir les cases voisines des cases voisines.
       - Sinon on s'arrête.
 
-4) Affiche le plateau avec la/les case(s) qui a/ont été découverte(s).
+4) Affiche le plateau avec la/les case(s) qui a/ont été découverte(s). Et mise à jour du compteur.
 
 5) Choix de la case à découvir.
 
-6) Refait le point 3), 4), 5) jusqu'à l'infini.
+6) Refait les étapes 3), 4), 5) jusqu'à l'infini.
 
 

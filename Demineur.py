@@ -6,7 +6,8 @@ PERDU = '!'
 DRAPEAU = '*'
 
 LEVELS = [(9,9), (16,16), (24,24)]
-MINES = [9, 16, 24]
+MINES = [10, 40, 100]
+
 
 def genere_plateau_vide(level): #level = 0 ou 1 ou 2
     x_size, y_size = LEVELS[level]
@@ -20,27 +21,27 @@ def genere_plateau_vide(level): #level = 0 ou 1 ou 2
 
 
 def place_mines(plateau, level, alea=True):
-    
+    x_size,y_size = LEVELS[level]
     #plateau_avec_mines = place_mines(plateau, level) # alea=True
     #plateau_avec_mines = place_mines(plateau, level, alea = False) 
+    
     n = MINES[level]
     plateau_avec_mines = deepcopy(plateau)
     if not alea:
         # on place les mines sur la diagonale
-        for i in range(n):
+        for i in range(x_size):
             plateau_avec_mines[i][i]['mine'] = True
         return plateau_avec_mines
     # on place les mines de façon aléatoire
     
-    for i, ligne in enumerate(plateau_avec_mines): 
-        for j, colonne in enumerate(ligne):
-    
-    
-            if random.randint(0,4)==0: 
-                plateau_avec_mines[i][j]['mine'] = True 
+    while n!=0:
+            i = random.randint(0,x_size-1)
+            j = random.randint(0,y_size-1)
+            if not plateau[i][j]['mine']:
+                plateau_avec_mines[i][j]['mine'] = True
+                n-=1
+            
     return plateau_avec_mines
-
-
 
 def construire_plateau(level, alea = True):
     plateau_vide = genere_plateau_vide(level)
@@ -50,7 +51,7 @@ def construire_plateau(level, alea = True):
 
 def coup_joueur(plateau):
     #le joueur donne (x,y) ou il met un drapeau
-    answer = input("coordonnées ? : ")
+    answer = input("Coordonnées ? : ")
     x, y = answer.split(',')
     d = input("Un DRAPEAU ? oui/non : ")
     if d == 'oui': 
@@ -107,7 +108,7 @@ def decouvre_case(plateau,x,y):
 
     if plateau[x][y]["mine"] == True and plateau[x][y]["etat"] != DRAPEAU:
         plateau[x][y]["etat"] = PERDU
-        print("Tu as perdu")
+        print("Désolé, vous avez perdu ! ")
         return False 
     else :
         composante_connexe(plateau,x,y)
@@ -156,6 +157,8 @@ def display(plateau):
     
 def write_score(filename, score):
     with open(filename, mode='a', encoding='utf8') as f:
+        f.write('Ton score est de : ')
+        f.write('\n')
         f.write(str(score))
         f.write('\n')
 
@@ -168,12 +171,12 @@ filename = 'scores.txt'
 
 scores = read_scores(filename)
 
-print(scores)
+
 write_score(filename,0)
 
 
 niv = input("Niveau 0/1/2 ? : ")
-plateau=construire_plateau(int(niv), alea = True )
+plateau=construire_plateau(int(niv), alea = False )
 m = total_mines(plateau)
 print(m)
 
@@ -183,22 +186,23 @@ while True:
     if plateau[x][y]["etat"] == DRAPEAU:
         m = m -1
         print(m)
-    
+    else : print(m)
     L = case_voisines(plateau,x,y)
     
     if not decouvre_case(plateau,x,y):   
         plateau = compte_mine_solution(plateau)
         display(plateau)
         niv = input("Niveau 0/1/2 ? : ")
-        plateau = construire_plateau(int(niv), alea = True) 
+        plateau = construire_plateau(int(niv), alea = False)
+        m = total_mines(plateau) 
         print(m)                                        
     if total_mines(plateau) == check(plateau):
-        print("Tu as gagné")
+        print("Bravo, tu as gagné ! ")
         write_score(filename, int(scores[-1]) + 1)
         scores = read_scores(filename)
-        print(scores)
         niv = input("Niveau 0/1/2 ? : ")
-        plateau = construire_plateau(int(niv), alea = True)
+        plateau = construire_plateau(int(niv), alea = False)
+        m = total_mines(plateau) 
         print(m)
     
     
