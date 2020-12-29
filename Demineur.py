@@ -57,9 +57,10 @@ def coup_joueur(plateau):
     if d == 'oui': 
         plateau[int(x)][int(y)]['etat'] = DRAPEAU
         return (int(x),int(y))
-    else : 
+    
+    else :
+        plateau[int(x)][int(y)]['etat'] = INCONNU
         return (int(x),int(y))
-
 
 def case_voisines(plateau,x,y):
         hauteur = len(plateau)
@@ -157,10 +158,11 @@ def display(plateau):
     
 def write_score(filename, score):
     with open(filename, mode='a', encoding='utf8') as f:
-        f.write('Ton score est de : ')
+        f.write('Parties gagnées : ')
         f.write('\n')
         f.write(str(score))
         f.write('\n')
+    
 
 def read_scores(filename):
     with open(filename, mode='r', encoding='utf8') as f:
@@ -199,7 +201,6 @@ while True:
     if total_mines(plateau) == check(plateau):
         print("Bravo, tu as gagné ! ")
         write_score(filename, int(scores[-1]) + 1)
-        scores = read_scores(filename)
         niv = input("Niveau 0/1/2 ? : ")
         plateau = construire_plateau(int(niv), alea = False)
         m = total_mines(plateau) 
