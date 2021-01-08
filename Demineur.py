@@ -126,7 +126,6 @@ def total_mines(plateau):
                 c +=1
     return c
 
-
 def check(plateau):
     # Compte le nombre de drapeau et de case inconnue
     c = 0
